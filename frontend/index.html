@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Portfolio App</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <main class="app">
+
+    <section class="hero">
+      <h1>Backend Portfolio App</h1>
+      <p>Registro, login, JWT, MongoDB y rutas protegidas</p>
+    </section>
+
+    <section class="session-card">
+      <div>
+        <span class="label">Estado de sesión</span>
+        <h2 id="statusText">No estás logueado</h2>
+        <p id="userText">Iniciá sesión para ver usuarios protegidos.</p>
+      </div>
+
+      <div class="session-actions">
+        <button id="logoutBtn" class="btn danger">Cerrar sesión</button>
+        <button id="deleteAccountBtn" class="btn outline-danger">Eliminar cuenta</button>
+      </div>
+    </section>
+
+    <section id="authOptions" class="auth-options">
+      <button id="showLoginBtn" class="option-card">
+        <span>🔐</span>
+        <strong>Iniciar sesión</strong>
+        <small>Ya tengo una cuenta</small>
+      </button>
+
+      <button id="showRegisterBtn" class="option-card">
+        <span>📝</span>
+        <strong>Registrarme</strong>
+        <small>Crear una cuenta nueva</small>
+      </button>
+    </section>
+
+    <section id="registerSection" class="card hidden">
+      <div class="card-header">
+        <h2>Crear cuenta</h2>
+        <button class="small-btn" id="backFromRegister">Volver</button>
+      </div>
+
+      <input type="text" id="registerName" placeholder="Nombre">
+      <input type="email" id="registerEmail" placeholder="Email">
+      <input type="password" id="registerPassword" placeholder="Contraseña">
+
+      <button id="registerBtn" class="btn primary">Registrarse</button>
+    </section>
+
+    <section id="loginSection" class="card hidden">
+      <div class="card-header">
+        <h2>Iniciar sesión</h2>
+        <button class="small-btn" id="backFromLogin">Volver</button>
+      </div>
+
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Contraseña">
+
+      <button id="loginBtn" class="btn primary">Entrar</button>
+    </section>
+
+    <section id="dashboardSection" class="dashboard hidden">
+      <section class="card">
+        <h2>Token JWT</h2>
+        <p id="tokenText" class="token">Todavía no hay token</p>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Usuarios</h2>
+          <button id="getUsersBtn" class="btn primary small">Ver usuarios</button>
+        </div>
+
+        <ul id="usersList" class="users-list"></ul>
+      </section>
+    </section>
+
+    <p id="message"></p>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
