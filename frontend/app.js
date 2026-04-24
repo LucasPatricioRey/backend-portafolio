@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000";
+const API_URL = "https://backend-portafolio-r87v.onrender.com";
 
 const authOptions = document.getElementById("authOptions");
 const registerSection = document.getElementById("registerSection");
