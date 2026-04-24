@@ -1,56 +1,51 @@
-# Backend Portfolio App
+🚀 Backend Portfolio App
 
-Aplicación fullstack simple con autenticación de usuarios utilizando Node.js, Express, MongoDB y JSON Web Tokens (JWT). Incluye un frontend básico para interactuar con la API.
+Aplicación fullstack desarrollada como proyecto de portfolio que incluye autenticación con JWT, base de datos en MongoDB y despliegue en la nube.
 
----
+🌐 Demo en vivo
 
-## Demo en vivo
+🔗 Frontend: https://backendloginregisteruser.netlify.app
+🔗 Backend: https://backend-portafolio-r87v.onrender.com
 
-👉 (Podés agregarlo más adelante si lo deployás)
+##  Vista previa
 
----
+![Vista previa](vistaPrevia.png)
 
-## 📸 Vista previa
+![Vista previa](vistaPrevia2.png)
 
-![Vista previa](preview.png)
 
----
+🧠 Funcionalidades
+Registro de usuarios
+Login con autenticación JWT
+Protección de rutas
+Visualización de usuarios autenticados
+Eliminación de cuenta
+Manejo de sesión (login/logout)
+Persistencia de datos en MongoDB
 
-## Funcionalidades
+🛠️ Tecnologías utilizadas
+Backend
+Node.js
+Express
+MongoDB (Atlas)
+JWT (jsonwebtoken)
+bcrypt
+dotenv
+cors
+Frontend
+HTML
+CSS
+JavaScript (Vanilla)
+Deploy
+Render (Backend)
+Netlify (Frontend)
 
-- Registro de usuarios
-- Login con validación de contraseña encriptada
-- Generación de token JWT
-- Rutas protegidas con middleware de autenticación
-- Obtener lista de usuarios (protegido)
-- Eliminar cuenta propia
-- Logout desde frontend
-- Persistencia de sesión con localStorage
+🔐 Autenticación
 
----
+Se implementa autenticación mediante JSON Web Tokens (JWT):
 
-## Tecnologías utilizadas
+El usuario inicia sesión
+El servidor genera un token
+El frontend guarda el token en localStorage
+Las rutas protegidas requieren ese token
 
-- Node.js
-- Express
-- MongoDB Atlas
-- JSON Web Token (JWT)
-- Bcrypt
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
-
----
-
-## Aprendizajes
-
-Este proyecto me permitió practicar:
-
-- Creación de APIs REST
-- Conexión a bases de datos con MongoDB
-- Autenticación con JWT
-- Encriptación de contraseñas con bcrypt
-- Middleware en Express
-- Manejo de headers y tokens
-- Comunicación frontend-backend
-- Manejo de estados de sesión en el frontend
