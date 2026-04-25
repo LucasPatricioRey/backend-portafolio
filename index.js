@@ -82,6 +82,32 @@ app.get("/projects", authMiddleware, async (req, res) => {
   res.json(projects);
 });
 
+// ACTUALIZAR PROYECTO
+app.put("/projects/:id", authMiddleware, async (req, res) => {
+  const id = req.params.id;
+  const { title, description, status } = req.body;
+
+  if (!title || !description || !status) {
+    return res.status(400).json({ message: "Faltan datos" });
+  }
+
+  await projectsCollection.updateOne(
+    {
+      _id: new ObjectId(id),
+      userId: req.user.id
+    },
+    {
+      $set: {
+        title,
+        description,
+        status
+      }
+    }
+  );
+
+  res.json({ message: "Proyecto actualizado" });
+});
+
 // ELIMINAR PROYECTO
 app.delete("/projects/:id", authMiddleware, async (req, res) => {
   const id = req.params.id;
