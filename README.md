@@ -1,51 +1,37 @@
-🚀 Backend Portfolio App
+# Backend Portfolio App
 
-Aplicación fullstack desarrollada como proyecto de portfolio que incluye autenticación con JWT, base de datos en MongoDB y despliegue en la nube.
+Aplicación full stack de portfolio pensada para mostrar un flujo real de autenticación y backend.
 
-🌐 Demo en vivo
+## Demo
 
-🔗 Frontend: https://backendloginregisteruser.netlify.app
-🔗 Backend: https://backend-portafolio-r87v.onrender.com
+- Frontend: https://backendloginregisteruser.netlify.app
+- Backend: https://backend-portafolio-r87v.onrender.com
 
-##  Vista previa
+## Qué muestra
+
+- Registro de usuarios
+- Login con JWT
+- Persistencia de sesión con `localStorage`
+- Rutas protegidas
+- Listado de usuarios autenticados
+- CRUD de proyectos por usuario
+- Eliminación de cuenta propia
+
+## Stack
+
+- Backend: Node.js, Express, MongoDB, JWT, bcrypt, dotenv, cors
+- Frontend: HTML, CSS, JavaScript
+- Deploy: Render y Netlify
+
+## Ejecutar localmente
+
+1. Crear un archivo `.env` con `MONGO_URI` y `JWT_SECRET`.
+2. Instalar dependencias con `npm install`.
+3. Levantar el servidor con `npm start`.
+4. Abrir `http://localhost:3000`.
+
+## Vista previa
 
 ![Vista previa](vistaPrevia.png)
 
 ![Vista previa](vistaPrevia2.png)
-
-
-🧠 Funcionalidades
-Registro de usuarios
-Login con autenticación JWT
-Protección de rutas
-Visualización de usuarios autenticados
-Eliminación de cuenta
-Manejo de sesión (login/logout)
-Persistencia de datos en MongoDB
-
-🛠️ Tecnologías utilizadas
-Backend
-Node.js
-Express
-MongoDB (Atlas)
-JWT (jsonwebtoken)
-bcrypt
-dotenv
-cors
-Frontend
-HTML
-CSS
-JavaScript (Vanilla)
-Deploy
-Render (Backend)
-Netlify (Frontend)
-
-🔐 Autenticación
-
-Se implementa autenticación mediante JSON Web Tokens (JWT):
-
-El usuario inicia sesión
-El servidor genera un token
-El frontend guarda el token en localStorage
-Las rutas protegidas requieren ese token
-

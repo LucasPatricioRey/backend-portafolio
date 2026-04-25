@@ -4,87 +4,184 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Backend Portfolio App</title>
+  <meta
+    name="description"
+    content="Demo full stack con registro, login, JWT, MongoDB, rutas protegidas y CRUD de proyectos."
+  >
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-  <main class="app">
-
+  <main class="app-shell">
     <section class="hero">
-      <h1>Backend Portfolio App</h1>
-      <p>Registro, login, JWT, MongoDB y rutas protegidas</p>
-    </section>
+      <div class="hero-copy">
+        <p class="eyebrow">Full Stack Demo</p>
+        <h1>Autenticación JWT, MongoDB y panel protegido en una sola app.</h1>
+        <p class="hero-text">
+          Este proyecto muestra un flujo real de backend: registro, login, token persistido,
+          rutas protegidas, listado de usuarios y CRUD de proyectos asociado al usuario autenticado.
+        </p>
 
-    <section class="session-card">
-      <div>
-        <span class="label">Estado de sesión</span>
+        <div class="hero-chips">
+          <span>Node.js</span>
+          <span>Express</span>
+          <span>MongoDB</span>
+          <span>JWT</span>
+          <span>Vanilla JS</span>
+        </div>
+      </div>
+
+      <aside class="hero-panel glass-card">
+        <span class="panel-label">Estado actual</span>
         <h2 id="statusText">No estás logueado</h2>
-        <p id="userText">Iniciá sesión para ver usuarios protegidos.</p>
-      </div>
+        <p id="userText">Elegí una opción para empezar a probar el flujo.</p>
 
-      <div class="session-actions">
-        <button id="logoutBtn" class="btn danger">Cerrar sesión</button>
-        <button id="deleteAccountBtn" class="btn outline-danger">Eliminar cuenta</button>
-      </div>
+        <div class="session-actions">
+          <button id="logoutBtn" class="btn btn-danger">Cerrar sesión</button>
+          <button id="deleteAccountBtn" class="btn btn-ghost-danger">Eliminar cuenta</button>
+        </div>
+      </aside>
     </section>
 
-    <section id="authOptions" class="auth-options">
-      <button id="showLoginBtn" class="option-card">
-        <span>🔐</span>
+    <section id="authOptions" class="auth-grid">
+      <button id="showLoginBtn" class="choice-card glass-card">
+        <span class="choice-icon">Acceso</span>
         <strong>Iniciar sesión</strong>
-        <small>Ya tengo una cuenta</small>
+        <small>Usá una cuenta existente y probá las rutas protegidas.</small>
       </button>
 
-      <button id="showRegisterBtn" class="option-card">
-        <span>📝</span>
-        <strong>Registrarme</strong>
-        <small>Crear una cuenta nueva</small>
+      <button id="showRegisterBtn" class="choice-card glass-card">
+        <span class="choice-icon">Alta</span>
+        <strong>Crear cuenta</strong>
+        <small>Registrate para generar token y cargar proyectos propios.</small>
       </button>
     </section>
 
-    <section id="registerSection" class="card hidden">
-      <div class="card-header">
-        <h2>Crear cuenta</h2>
-        <button class="small-btn" id="backFromRegister">Volver</button>
-      </div>
+    <section class="forms-grid">
+      <section id="registerSection" class="content-card glass-card hidden">
+        <div class="card-header">
+          <div>
+            <span class="card-kicker">Registro</span>
+            <h2>Crear cuenta</h2>
+          </div>
+          <button class="small-btn" id="backFromRegister">Volver</button>
+        </div>
 
-      <input type="text" id="registerName" placeholder="Nombre">
-      <input type="email" id="registerEmail" placeholder="Email">
-      <input type="password" id="registerPassword" placeholder="Contraseña">
+        <div class="field-grid">
+          <label class="field">
+            <span>Nombre</span>
+            <input type="text" id="registerName" placeholder="Tu nombre">
+          </label>
 
-      <button id="registerBtn" class="btn primary">Registrarse</button>
-    </section>
+          <label class="field">
+            <span>Email</span>
+            <input type="email" id="registerEmail" placeholder="tuemail@mail.com">
+          </label>
 
-    <section id="loginSection" class="card hidden">
-      <div class="card-header">
-        <h2>Iniciar sesión</h2>
-        <button class="small-btn" id="backFromLogin">Volver</button>
-      </div>
+          <label class="field">
+            <span>Contraseña</span>
+            <input type="password" id="registerPassword" placeholder="Mínimo una contraseña segura">
+          </label>
+        </div>
 
-      <input type="email" id="loginEmail" placeholder="Email">
-      <input type="password" id="loginPassword" placeholder="Contraseña">
+        <button id="registerBtn" class="btn btn-primary full-width">Registrarse</button>
+      </section>
 
-      <button id="loginBtn" class="btn primary">Entrar</button>
+      <section id="loginSection" class="content-card glass-card hidden">
+        <div class="card-header">
+          <div>
+            <span class="card-kicker">Login</span>
+            <h2>Iniciar sesión</h2>
+          </div>
+          <button class="small-btn" id="backFromLogin">Volver</button>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>Email</span>
+            <input type="email" id="loginEmail" placeholder="tuemail@mail.com">
+          </label>
+
+          <label class="field">
+            <span>Contraseña</span>
+            <input type="password" id="loginPassword" placeholder="Tu contraseña">
+          </label>
+        </div>
+
+        <button id="loginBtn" class="btn btn-primary full-width">Entrar</button>
+      </section>
     </section>
 
     <section id="dashboardSection" class="dashboard hidden">
-      <section class="card">
-        <h2>Token JWT</h2>
+      <section class="content-card glass-card">
+        <div class="card-header">
+          <div>
+            <span class="card-kicker">Token</span>
+            <h2>JWT activo</h2>
+          </div>
+        </div>
+
         <p id="tokenText" class="token">Todavía no hay token</p>
       </section>
 
-      <section class="card">
+      <section class="content-card glass-card">
         <div class="card-header">
-          <h2>Usuarios</h2>
-          <button id="getUsersBtn" class="btn primary small">Ver usuarios</button>
+          <div>
+            <span class="card-kicker">Rutas protegidas</span>
+            <h2>Usuarios registrados</h2>
+          </div>
+          <button id="getUsersBtn" class="btn btn-secondary">Ver usuarios</button>
         </div>
 
         <ul id="usersList" class="users-list"></ul>
       </section>
+
+      <section class="content-card glass-card project-form-card">
+        <div class="card-header">
+          <div>
+            <span class="card-kicker">CRUD</span>
+            <h2 id="projectFormTitle">Nuevo proyecto</h2>
+          </div>
+          <button id="cancelEditBtn" class="small-btn hidden">Cancelar edición</button>
+        </div>
+
+        <div class="field-grid">
+          <label class="field">
+            <span>Título</span>
+            <input type="text" id="projectTitle" placeholder="Ej. API para gestión de tareas">
+          </label>
+
+          <label class="field">
+            <span>Descripción</span>
+            <textarea id="projectDescription" rows="4" placeholder="Describí qué resuelve el proyecto"></textarea>
+          </label>
+
+          <label class="field">
+            <span>Estado</span>
+            <select id="projectStatus">
+              <option value="pendiente">Pendiente</option>
+              <option value="en progreso">En progreso</option>
+              <option value="completado">Completado</option>
+            </select>
+          </label>
+        </div>
+
+        <button id="saveProjectBtn" class="btn btn-primary full-width">Guardar proyecto</button>
+      </section>
+
+      <section class="content-card glass-card projects-card">
+        <div class="card-header">
+          <div>
+            <span class="card-kicker">Tus datos</span>
+            <h2>Proyectos del usuario</h2>
+          </div>
+          <button id="refreshProjectsBtn" class="btn btn-secondary">Actualizar</button>
+        </div>
+
+        <div id="projectsList" class="projects-list"></div>
+      </section>
     </section>
 
-    <p id="message"></p>
-
+    <p id="message" class="message"></p>
   </main>
 
   <script src="app.js"></script>
