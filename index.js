@@ -84,28 +84,42 @@ app.get("/projects", authMiddleware, async (req, res) => {
 
 // ACTUALIZAR PROYECTO
 app.put("/projects/:id", authMiddleware, async (req, res) => {
-  const id = req.params.id;
-  const { title, description, status } = req.body;
+  try {
+    const id = req.params.id;
+    const { title, description, status } = req.body;
 
-  if (!title || !description || !status) {
-    return res.status(400).json({ message: "Faltan datos" });
-  }
-
-  await projectsCollection.updateOne(
-    {
-      _id: new ObjectId(id),
-      userId: req.user.id
-    },
-    {
-      $set: {
-        title,
-        description,
-        status
-      }
+    if (!ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "ID inválido" });
     }
-  );
 
-  res.json({ message: "Proyecto actualizado" });
+    if (!title || !description || !status) {
+      return res.status(400).json({ message: "Faltan datos" });
+    }
+
+    const result = await projectsCollection.updateOne(
+      {
+        _id: new ObjectId(id),
+        userId: req.user.id
+      },
+      {
+        $set: {
+          title,
+          description,
+          status
+        }
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ message: "Proyecto no encontrado" });
+    }
+
+    res.json({ message: "Proyecto actualizado" });
+
+  } catch (error) {
+    console.log("Error al actualizar proyecto:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
 });
 
 // ELIMINAR PROYECTO
