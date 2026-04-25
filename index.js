@@ -16,6 +16,7 @@ const client = new MongoClient(uri);
 
 let db;
 let usersCollection;
+let projectsCollection;
 
 async function connectDB() {
   try {
@@ -24,6 +25,7 @@ async function connectDB() {
 
     db = client.db("miBase");
     usersCollection = db.collection("users");
+    projectsCollection = db.collection("projects");
   } catch (error) {
     console.log("Error al conectar", error);
   }
@@ -50,6 +52,47 @@ function authMiddleware(req, res, next) {
     return res.status(401).json({ message: "Token inválido" });
   }
 }
+
+// CREAR PROYECTO
+app.post("/projects", authMiddleware, async (req, res) => {
+  const { title, description } = req.body;
+
+  if (!title || !description) {
+    return res.status(400).json({ message: "Faltan datos" });
+  }
+
+  const newProject = {
+    title,
+    description,
+    status: "pendiente",
+    userId: req.user.id
+  };
+
+  await projectsCollection.insertOne(newProject);
+
+  res.status(201).json(newProject);
+});
+
+// OBTENER PROYECTOS DEL USUARIO
+app.get("/projects", authMiddleware, async (req, res) => {
+  const projects = await projectsCollection
+    .find({ userId: req.user.id })
+    .toArray();
+
+  res.json(projects);
+});
+
+// ELIMINAR PROYECTO
+app.delete("/projects/:id", authMiddleware, async (req, res) => {
+  const id = req.params.id;
+
+  await projectsCollection.deleteOne({
+    _id: new ObjectId(id),
+    userId: req.user.id
+  });
+
+  res.json({ message: "Proyecto eliminado" });
+});
 
 // REGISTER
 app.post("/register", async (req, res) => {
