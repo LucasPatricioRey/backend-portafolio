@@ -49,4 +49,3 @@ Luego abrir `http://localhost:3000`.
 ## Vista previa
 
 ![Vista previa principal](./vistaPrevia.png)
-![Vista previa secundaria](./vistaPrevia2.png)
