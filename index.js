@@ -21,13 +21,15 @@ let client;
 let usersCollection;
 let projectsCollection;
 let databaseStatus = "disconnected";
+let databaseError = "";
 
 async function connectDB() {
   if (!uri) {
-    throw new Error("Falta MONGO_URI en las variables de entorno.");
+    throw new Error("Falta MONGO_URI o MONGODB_URI en las variables de entorno.");
   }
 
   databaseStatus = "connecting";
+  databaseError = "";
   client = new MongoClient(uri, {
     serverSelectionTimeoutMS: 10000
   });
@@ -39,6 +41,7 @@ async function connectDB() {
   usersCollection = db.collection("users");
   projectsCollection = db.collection("projects");
   databaseStatus = "connected";
+  databaseError = "";
 }
 
 function authMiddleware(req, res, next) {
@@ -84,7 +87,8 @@ app.get("/health", (_req, res) => {
   res.json({
     ok: true,
     service: "backend-portafolio",
-    database: databaseStatus
+    database: databaseStatus,
+    databaseError
   });
 });
 
@@ -410,5 +414,6 @@ app.listen(PORT, () => {
 
 connectDB().catch(error => {
   databaseStatus = "error";
+  databaseError = error.message;
   console.error("No se pudo conectar a MongoDB:", error.message);
 });
