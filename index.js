@@ -88,7 +88,7 @@ app.get("/health", (_req, res) => {
     ok: true,
     service: "backend-portafolio",
     database: databaseStatus,
-    databaseError
+    databaseError: databaseError ? "connection_failed" : ""
   });
 });
 
