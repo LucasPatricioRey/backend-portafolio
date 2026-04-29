@@ -9,7 +9,7 @@ const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const uri = process.env.MONGO_URI;
+const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
 const dbName = process.env.MONGO_DB_NAME || "miBase";
 const jwtSecret = process.env.JWT_SECRET;
 

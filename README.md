@@ -37,6 +37,8 @@ JWT_SECRET=tu_clave_secreta
 PORT=3000
 ```
 
+Tambien se puede usar `MONGODB_URI` si la plataforma lo define con ese nombre.
+
 ## Ejecutar en local
 
 ```bash
