@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 const uri = process.env.MONGO_URI || process.env.MONGODB_URI;
 const dbName = process.env.MONGO_DB_NAME || "miBase";
 const jwtSecret = process.env.JWT_SECRET;
+const DATABASE_RETRY_DELAY = 15000;
 
 app.use(cors());
 app.use(express.json());
@@ -22,8 +23,13 @@ let usersCollection;
 let projectsCollection;
 let databaseStatus = "disconnected";
 let databaseError = "";
+let reconnectTimer;
 
 async function connectDB() {
+  if (databaseStatus === "connected" || databaseStatus === "connecting") {
+    return;
+  }
+
   if (!uri) {
     throw new Error("Falta MONGO_URI o MONGODB_URI en las variables de entorno.");
   }
@@ -42,6 +48,21 @@ async function connectDB() {
   projectsCollection = db.collection("projects");
   databaseStatus = "connected";
   databaseError = "";
+}
+
+function scheduleDatabaseReconnect() {
+  clearTimeout(reconnectTimer);
+
+  reconnectTimer = setTimeout(() => {
+    connectDB().catch(handleDatabaseError);
+  }, DATABASE_RETRY_DELAY);
+}
+
+function handleDatabaseError(error) {
+  databaseStatus = "error";
+  databaseError = error.message;
+  console.error("No se pudo conectar a MongoDB:", error.message);
+  scheduleDatabaseReconnect();
 }
 
 function authMiddleware(req, res, next) {
@@ -412,8 +433,4 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`);
 });
 
-connectDB().catch(error => {
-  databaseStatus = "error";
-  databaseError = error.message;
-  console.error("No se pudo conectar a MongoDB:", error.message);
-});
+connectDB().catch(handleDatabaseError);
