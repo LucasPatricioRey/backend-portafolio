@@ -10,31 +10,42 @@ const { MongoClient, ObjectId } = require("mongodb");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const uri = process.env.MONGO_URI;
+const dbName = process.env.MONGO_DB_NAME || "miBase";
 const jwtSecret = process.env.JWT_SECRET;
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "frontend")));
 
-const client = new MongoClient(uri);
-
+let client;
 let usersCollection;
 let projectsCollection;
+let databaseStatus = "disconnected";
 
 async function connectDB() {
   if (!uri) {
     throw new Error("Falta MONGO_URI en las variables de entorno.");
   }
 
+  databaseStatus = "connecting";
+  client = new MongoClient(uri, {
+    serverSelectionTimeoutMS: 10000
+  });
+
   await client.connect();
   console.log("Conectado a MongoDB");
 
-  const db = client.db("miBase");
+  const db = client.db(dbName);
   usersCollection = db.collection("users");
   projectsCollection = db.collection("projects");
+  databaseStatus = "connected";
 }
 
 function authMiddleware(req, res, next) {
+  if (!jwtSecret) {
+    return res.status(503).json({ message: "JWT_SECRET no configurado en el servidor" });
+  }
+
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -56,7 +67,9 @@ function authMiddleware(req, res, next) {
 
 function ensureCollections(res) {
   if (!usersCollection || !projectsCollection) {
-    res.status(503).json({ message: "Base de datos no disponible" });
+    res.status(503).json({
+      message: "Base de datos no disponible. Intenta nuevamente en unos segundos."
+    });
     return false;
   }
 
@@ -68,7 +81,11 @@ function isValidObjectId(id) {
 }
 
 app.get("/health", (_req, res) => {
-  res.json({ ok: true, service: "backend-portafolio" });
+  res.json({
+    ok: true,
+    service: "backend-portafolio",
+    database: databaseStatus
+  });
 });
 
 app.get("/", (_req, res) => {
@@ -133,6 +150,10 @@ app.post("/login", async (req, res) => {
 
     if (!passwordValid) {
       return res.status(401).json({ message: "Contraseña incorrecta" });
+    }
+
+    if (!jwtSecret) {
+      return res.status(503).json({ message: "JWT_SECRET no configurado en el servidor" });
     }
 
     const token = jwt.sign(
@@ -383,13 +404,11 @@ app.delete("/me", authMiddleware, async (req, res) => {
   }
 });
 
-connectDB()
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Servidor corriendo en http://localhost:${PORT}`);
-    });
-  })
-  .catch(error => {
-    console.error("No se pudo iniciar el servidor:", error);
-    process.exit(1);
-  });
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
+
+connectDB().catch(error => {
+  databaseStatus = "error";
+  console.error("No se pudo conectar a MongoDB:", error.message);
+});
